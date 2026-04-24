@@ -1,24 +1,33 @@
-// ১. কিছু ডামি ডেটা তৈরি করা
-const postData = [
-  {
-    username: "coder_tanzim",
-    location: "Jhenaidah, Bangladesh",
-    postImg: "https://picsum.photos/600/600?random=1",
-    likes: 245,
-    caption: "Building something cool with Vanilla JS! 💻✨",
-  },
-  {
-    username: "nature_lover",
-    location: "Sylhet",
-    postImg: "https://picsum.photos/600/600?random=2",
-    likes: 120,
-    caption: "Rainy days are just peaceful.",
-  },
-];
+// ১. ২০টি পোস্টের জন্য ডামি ডেটা তৈরি করার ফাংশন
+const generatePosts = (count) => {
+  const posts = [];
+  const locations = [
+    "Jhenaidah, Bangladesh",
+    "Dhaka",
+    "Sylhet",
+    "Chattogram",
+    "Maldives",
+    "Finland",
+  ];
+
+  for (let i = 1; i <= count; i++) {
+    posts.push({
+      username: i === 1 ? "coder_tanzim" : `user_explorer_${i}`,
+      location: locations[Math.floor(Math.random() * locations.length)],
+      postImg: `https://picsum.photos/600/600?random=${i}`,
+      likes: Math.floor(Math.random() * 500) + 50,
+      caption: `Post number ${i}: Building this awesome Instagram clone! 🚀 #coding #webdev`,
+    });
+  }
+  return posts;
+};
+
+// ২০টি পোস্টের লিস্ট তৈরি
+const postData = generatePosts(20);
 
 const storyCount = 8;
 
-// ২. স্টোরি রেন্ডার করা
+// ২. স্টোরি রেন্ডার করা (৮টি স্টোরি)
 const storyContainer = document.getElementById("story-container");
 
 for (let i = 0; i < storyCount; i++) {
@@ -26,15 +35,15 @@ for (let i = 0; i < storyCount; i++) {
         <div class="flex-shrink-0 cursor-pointer">
             <div class="w-16 h-16 rounded-full p-0.5 bg-gradient-to-tr from-yellow-400 to-fuchsia-600">
                 <div class="w-full h-full rounded-full bg-white p-0.5">
-                    <div class="w-full h-full rounded-full bg-gray-200"></div>
+                    <img src="https://i.pravatar.cc/150?u=${i}" class="w-full h-full rounded-full bg-gray-200 object-cover" alt="story">
                 </div>
             </div>
-            <p class="text-[10px] text-center mt-1">User_${i + 1}</p>
+            <p class="text-[10px] text-center mt-1 font-medium">User_${i + 1}</p>
         </div>`;
   storyContainer.innerHTML += storyHTML;
 }
 
-// ৩. ফিড রেন্ডার করা
+// ৩. ফিড রেন্ডার করা (২০টি পোস্ট)
 const feedContainer = document.getElementById("feed-container");
 
 postData.forEach((post) => {
@@ -42,7 +51,9 @@ postData.forEach((post) => {
         <div class="bg-white border rounded-lg mb-8 shadow-sm">
             <div class="flex items-center justify-between p-3">
                 <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-full bg-gray-300"></div>
+                    <div class="w-8 h-8 rounded-full overflow-hidden border">
+                        <img src="https://i.pravatar.cc/150?u=${post.username}" class="w-full h-full object-cover">
+                    </div>
                     <div>
                         <p class="font-semibold text-xs">${post.username}</p>
                         <p class="text-[10px] text-gray-500">${post.location}</p>
@@ -51,7 +62,7 @@ postData.forEach((post) => {
                 <i data-lucide="more-horizontal" size="20" class="cursor-pointer"></i>
             </div>
 
-            <img src="${post.postImg}" class="post-image border-y" alt="Post">
+            <img src="${post.postImg}" class="post-image border-y w-full object-cover aspect-square bg-gray-100" alt="Post">
 
             <div class="p-3">
                 <div class="flex justify-between items-center mb-2">
@@ -62,11 +73,11 @@ postData.forEach((post) => {
                     </div>
                     <i data-lucide="bookmark" class="cursor-pointer"></i>
                 </div>
-                <p class="font-semibold text-sm">${post.likes} likes</p>
+                <p class="font-semibold text-sm">${post.likes.toLocaleString()} likes</p>
                 <p class="text-sm mt-1">
                     <span class="font-semibold">${post.username}</span> ${post.caption}
                 </p>
-                <p class="text-gray-400 text-[11px] mt-2 cursor-pointer uppercase">View all comments</p>
+                <p class="text-gray-400 text-[11px] mt-2 cursor-pointer uppercase font-medium">View all comments</p>
             </div>
         </div>
     `;
